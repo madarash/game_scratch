@@ -9,13 +9,13 @@ class MyPlayer extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       alignment: Alignment(playerX, 1),
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(8),
-        child: Container(
-          color: Colors.blue,
-          height: 40,
-          width: 40,
-        ),
+      child: Container(
+        decoration: const BoxDecoration(
+            image: DecorationImage(
+                alignment: Alignment.bottomCenter,
+                image: AssetImage('assets/images/character.png'))),
+        height: 110,
+        width: 80,
       ),
     );
   }

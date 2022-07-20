@@ -16,15 +16,18 @@ enum Direction { left, right }
 class _HomePageState extends State<HomePage> {
   // player variables
   static double playerX = 0;
+
   //missile variables
   double missileX = playerX;
   double missileY = 1;
-  double missileHeight = 10;
+  double missileHeight = 0;
   bool missileShot = false;
   //ball variables
-  double ballY = 1;
-  double ballX = 0.5;
+  double ballY = -0.7;
+  double ballX = -0.88;
   var ballDirection = Direction.left;
+  //score counter
+  int score = 0;
 
 //convert height to coordinate
   double hieghtToPosition(double height) {
@@ -84,7 +87,9 @@ class _HomePageState extends State<HomePage> {
           if (ballY > hieghtToPosition(missileHeight) &&
               (ballX - missileX).abs() < 0.03) {
             resetMissile();
-            ballX = 5;
+            score++;
+            ballX > 0 ? ballX = 2 : ballX = -2;
+
             timer.cancel();
           }
         },
@@ -94,14 +99,14 @@ class _HomePageState extends State<HomePage> {
 
   void resetMissile() {
     missileX = playerX;
-    missileHeight = 10;
+    missileHeight = 0;
     missileShot = false;
   }
 
   void startGame() {
     double time = 0;
-    double height = 1;
-    double velocity = 60; //how strong jump is
+    double height = 0;
+    double velocity = 80; //how strong jump is
     // setState(() {});
     Timer.periodic(const Duration(milliseconds: 10), (timer) {
       //upside down parabola(bounce ball)
@@ -160,11 +165,15 @@ class _HomePageState extends State<HomePage> {
 
   bool playerDies() {
     //if the ball position and the player position are the same, then player dies
-    if ((ballX - playerX).abs() < 0.05 && ballY > 0.95) {
+    if ((ballX - playerX).abs() < 0.20 && ballY > 0.80) {
       return true;
     } else {
       return false;
     }
+  }
+
+  changePositionBall() {
+    return ballX == 1.0 ? -1.0 : 1.0;
   }
 
   @override
@@ -186,9 +195,8 @@ class _HomePageState extends State<HomePage> {
       child: Column(
         children: [
           Expanded(
-            flex: 3,
+            flex: 5,
             child: Container(
-              color: Colors.pink[100],
               child: Center(
                 child: Stack(
                   children: [
@@ -199,6 +207,31 @@ class _HomePageState extends State<HomePage> {
                       missilHieght: missileHeight,
                     ),
                     MyPlayer(playerX: playerX),
+                    Positioned(
+                      top: 25,
+                      right: 10,
+                      child: SizedBox(
+                        height: 50,
+                        width: 100,
+                        child: Text(
+                          'score:$score',
+                          textDirection: TextDirection.rtl,
+                          style: const TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.black,
+                          ),
+                        ),
+                      ),
+                    ),
+                    Positioned(
+                      top: 25,
+                      left: 10,
+                      child: MyButton(
+                        icon: Icons.play_arrow,
+                        event: startGame,
+                      ),
+                    ),
                   ],
                 ),
               ),
@@ -210,10 +243,6 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  MyButton(
-                    icon: Icons.play_arrow,
-                    event: startGame,
-                  ),
                   MyButton(
                     icon: Icons.arrow_left,
                     event: moveLeft,

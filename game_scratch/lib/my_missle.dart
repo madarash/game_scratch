@@ -17,7 +17,13 @@ class MyMissle extends StatelessWidget {
     return Container(
       alignment: Alignment(missileX, missileY),
       child: Container(
-        color: Colors.yellow,
+        decoration: const BoxDecoration(boxShadow: [
+          BoxShadow(
+            color: Color.fromARGB(255, 223, 135, 77),
+            spreadRadius: 2,
+            blurRadius: 10,
+          )
+        ], color: Color.fromARGB(255, 197, 115, 47)),
         width: 5,
         height: missilHieght,
       ),

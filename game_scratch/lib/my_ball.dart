@@ -12,12 +12,19 @@ class MyBall extends StatelessWidget {
     return Container(
       alignment: Alignment(ballX, ballY),
       child: Container(
+        decoration: const BoxDecoration(
+          boxShadow: [
+            BoxShadow(
+              color: Colors.red,
+              spreadRadius: 2,
+              blurRadius: 10,
+            )
+          ],
+          image: DecorationImage(
+              image: AssetImage('assets/images/ball.png'), fit: BoxFit.cover),
+        ),
         width: 20,
         height: 20,
-        decoration: const BoxDecoration(
-          color: Colors.red,
-          shape: BoxShape.circle,
-        ),
       ),
     );
   }
